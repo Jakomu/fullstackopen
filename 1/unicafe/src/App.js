@@ -36,7 +36,7 @@ const Button = ({ rating, setRating }) => {
 };
 
 const Statistics = ({ good, neutral, bad }) => {
-  if (good + neutral + bad == 0) {
+  if (good + neutral + bad === 0) {
     return (
       <div>
         <h1>statistics</h1>
@@ -47,15 +47,29 @@ const Statistics = ({ good, neutral, bad }) => {
     return (
       <div>
         <h1>statistics</h1>
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
-        <p>all {bad + neutral + good}</p>
-        <p>average {(good - bad) / (good + neutral + bad)}</p>
-        <p>positive {(good / (good + neutral + bad)) * 100} %</p>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={bad + neutral + good} />
+        <StatisticLine
+          text="average"
+          value={(good - bad) / (good + neutral + bad)}
+        />
+        <StatisticLine
+          text="positive"
+          value={(good / (good + neutral + bad)) * 100 + " %"}
+        />
       </div>
     );
   }
+};
+
+const StatisticLine = ({ text, value }) => {
+  return (
+    <p>
+      {text} {value}
+    </p>
+  );
 };
 
 export default App;
