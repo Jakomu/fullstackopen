@@ -13,24 +13,57 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [points, setPoints] = useState([0, 0, 0, 0, 0, 0, 0]);
+  const [mostVotes, setMostVotes] = useState(-1);
+  const [mostVoted, setMostVoted] = useState("");
 
   const randomAnecdote = () => {
-    setSelected(Math.floor(Math.random() * 6));
+    setSelected(Math.floor(Math.random() * 7));
   };
 
-  const vote = () => {
+  const handlePoints = () => {
     const newPoints = [...points];
     newPoints[selected]++;
+    console.log(newPoints);
     setPoints(newPoints);
+    console.log(newPoints);
     console.log(points);
+    if (points[selected] > mostVotes) {
+      setMostVotes(points[selected]);
+      setMostVoted(anecdotes[selected]);
+    }
   };
 
   return (
     <div>
+      <Mainpart
+        anecdotes={anecdotes}
+        points={points}
+        selected={selected}
+        randomAnecdote={randomAnecdote}
+        vote={handlePoints}
+      />
+      <Mostvoted anecdotes={anecdotes} mostVoted={mostVoted} />
+    </div>
+  );
+};
+
+const Mainpart = ({ anecdotes, points, selected, randomAnecdote, vote }) => {
+  return (
+    <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
       <button onClick={vote}>vote</button>
       <button onClick={randomAnecdote}>next anecdote</button>
+    </div>
+  );
+};
+
+const Mostvoted = ({ mostVoted }) => {
+  return (
+    <div>
+      <h1>Anecdote with most votes</h1>
+      <p>{mostVoted}</p>
     </div>
   );
 };
