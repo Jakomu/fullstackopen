@@ -1,8 +1,8 @@
 const ExerciseTotal = ({ parts }) => {
-  let totalNumberOfExercises = 0;
-  for (let x in parts) {
-    totalNumberOfExercises += parts[x].exercises;
-  }
+  let totalNumberOfExercises = parts.reduce(
+    (total, currentValue) => total + currentValue.exercises,
+    0
+  );
 
   return (
     <div>
