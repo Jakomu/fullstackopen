@@ -10,11 +10,27 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault();
-    const newObject = {
-      name: newName,
-    };
-    setPersons(persons.concat(newObject));
+
+    if (nameAlreadyAdded()) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      const newObject = {
+        name: newName,
+      };
+      setPersons(persons.concat(newObject));
+    }
   };
+
+  function nameAlreadyAdded() {
+    let alreadyAdded = false;
+    persons.map((person) => {
+      if (person.name == newName) {
+        alreadyAdded = true;
+      }
+    });
+    if (alreadyAdded) return true;
+    else return false;
+  }
 
   return (
     <div>
