@@ -3,9 +3,14 @@ import { useState } from "react";
 const App = () => {
   const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
 
   const handleNameAdding = (event) => {
     setNewName(event.target.value);
+  };
+
+  const handlePhoneAdding = (event) => {
+    setNewNumber(event.target.value);
   };
 
   const addName = (event) => {
@@ -16,6 +21,7 @@ const App = () => {
     } else {
       const newObject = {
         name: newName,
+        phone: newNumber,
       };
       setPersons(persons.concat(newObject));
     }
@@ -24,7 +30,7 @@ const App = () => {
   function nameAlreadyAdded() {
     let alreadyAdded = false;
     persons.map((person) => {
-      if (person.name == newName) {
+      if (person.name === newName) {
         alreadyAdded = true;
       }
     });
@@ -37,7 +43,8 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addName}>
         <div>
-          name: <input value={newName} onChange={handleNameAdding} />
+          name: <input value={newName} onChange={handleNameAdding} /> <br />
+          phone: <input value={newNumber} onChange={handlePhoneAdding} />
         </div>
         <div>
           <button type="submit">add</button>
@@ -46,7 +53,9 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {persons.map((person) => (
-          <li key={person.name}>{person.name}</li>
+          <li key={person.name}>
+            {person.name} {person.phone}
+          </li>
         ))}
       </ul>
     </div>
