@@ -1,4 +1,4 @@
-const Countries = ({ countries }) => {
+const Countries = ({ countries, showCountry }) => {
   if (countries.length > 10) {
     return (
       <div>
@@ -12,7 +12,12 @@ const Countries = ({ countries }) => {
       <div>
         <ul>
           {countries.map((country) => (
-            <li key={country.name}>{country.name}</li>
+            <div key={country.name}>
+              <li>{country.name} </li>
+              <button value={country.name} onClick={showCountry}>
+                show
+              </button>
+            </div>
           ))}
         </ul>
       </div>
@@ -21,7 +26,7 @@ const Countries = ({ countries }) => {
     return (
       <div>
         {countries.map((country) => (
-          <div>
+          <div key={country.name}>
             <h1>{country.name}</h1>
             <p>{country.capital}</p>
             <p>{country.area}</p>
@@ -31,7 +36,12 @@ const Countries = ({ countries }) => {
                 <li key={language.name}>{language.name}</li>
               ))}
             </ul>
-            <img src={`${country.flag}`} width="30%" height="30%"></img>
+            <img
+              src={`${country.flag}`}
+              alt="country_flag"
+              width="30%"
+              height="30%"
+            ></img>
           </div>
         ))}
       </div>

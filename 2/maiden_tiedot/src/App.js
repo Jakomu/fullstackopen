@@ -9,7 +9,6 @@ const App = () => {
   useEffect(() => {
     axios.get("https://restcountries.com/v2/all").then((response) => {
       setCountries(response.data);
-      console.log(response.data);
     });
   }, []);
 
@@ -21,13 +20,17 @@ const App = () => {
     country.name.toLowerCase().includes(searchword.toLowerCase())
   );
 
+  const handleShowing = (event) => {
+    setSearchword(event.target.value);
+  };
+
   return (
     <div>
       <form>
         find countries <input value={searchword} onChange={handleSearching} />
       </form>
       <div>
-        <Countries countries={countriesFiltered} />
+        <Countries countries={countriesFiltered} showCountry={handleShowing} />
       </div>
     </div>
   );
