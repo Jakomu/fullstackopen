@@ -61,6 +61,13 @@ const App = () => {
     else return false;
   }
 
+  const removePerson = (id) => {
+    if (window.confirm(`Delete ${id}?`)) {
+      personService.removePerson(id);
+      setPersons(persons.filter((person) => person.id !== id));
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -73,7 +80,7 @@ const App = () => {
         handlePhoneAdding={handlePhoneAdding}
       />
       <h2>Numbers</h2>
-      <Persons list={filteredPersons} />
+      <Persons list={filteredPersons} removePerson={removePerson} />
     </div>
   );
 };
