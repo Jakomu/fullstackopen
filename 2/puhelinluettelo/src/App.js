@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import AddNameForm from "./components/AddNameForm";
+import AddPersonForm from "./components/AddNameForm";
 import FilterForm from "./components/FilterForm";
 import Persons from "./components/Persons";
+import personService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,8 +11,8 @@ const App = () => {
   const [filterValue, setFiltervalue] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
@@ -44,7 +44,9 @@ const App = () => {
         name: newName,
         phone: newNumber,
       };
-      setPersons(persons.concat(newObject));
+      personService
+        .addPerson(newObject)
+        .then((newPerson) => setPersons(persons.concat(newPerson)));
     }
   };
 
@@ -63,7 +65,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <FilterForm filterValue={filterValue} handleFiltering={handleFiltering} />
-      <AddNameForm
+      <AddPersonForm
         newName={newName}
         newNumber={newNumber}
         addName={addName}

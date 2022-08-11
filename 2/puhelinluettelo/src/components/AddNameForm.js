@@ -1,4 +1,4 @@
-const AddNameForm = (props) => {
+const AddPersonForm = (props) => {
   return (
     <form onSubmit={props.addName}>
       <div>
@@ -14,4 +14,4 @@ const AddNameForm = (props) => {
   );
 };
 
-export default AddNameForm;
+export default AddPersonForm;
