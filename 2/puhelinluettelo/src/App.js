@@ -36,13 +36,28 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault();
+    const idToEdit = nameAlreadyAdded();
 
-    if (nameAlreadyAdded()) {
-      alert(`${newName} is already added to phonebook`);
+    if (idToEdit !== -1) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace old number with a new one?`
+        )
+      ) {
+        const personToEdit = persons.find((person) => person.id === idToEdit);
+        const newPerson = { ...personToEdit, number: newNumber };
+        personService.editPerson(idToEdit, newPerson).then((response) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== idToEdit ? person : response.data
+            )
+          );
+        });
+      }
     } else {
       const newObject = {
         name: newName,
-        phone: newNumber,
+        number: newNumber,
       };
       personService
         .addPerson(newObject)
@@ -51,14 +66,13 @@ const App = () => {
   };
 
   function nameAlreadyAdded() {
-    let alreadyAdded = false;
-    persons.map((person) => {
+    let idToEdit = -1;
+    persons.forEach((person) => {
       if (person.name === newName) {
-        alreadyAdded = true;
+        idToEdit = person.id;
       }
     });
-    if (alreadyAdded) return true;
-    else return false;
+    return idToEdit;
   }
 
   const removePerson = (id) => {
