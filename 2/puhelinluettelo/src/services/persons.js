@@ -23,9 +23,7 @@ const removePerson = (id) => {
 };
 
 const editPerson = (id, newPerson) => {
-  return axios
-    .put(`${baseUrl}/${id}`, newPerson)
-    .catch((error) => console.log(error.message));
+  return axios.put(`${baseUrl}/${id}`, newPerson);
 };
 
 export default { getAll, addPerson, removePerson, editPerson };

@@ -4,6 +4,7 @@ import FilterForm from "./components/FilterForm";
 import Persons from "./components/Persons";
 import personService from "./services/persons";
 import Notification from "./components/Notification";
+import ErrorNotification from "./components/ErrorNotification";
 import "./index.css";
 
 const App = () => {
@@ -12,6 +13,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filterValue, setFiltervalue] = useState("");
   const [notificationMessage, setNotificationMessage] = useState(null);
+  const [errorNotificationMessage, setErrorNotificationMessage] =
+    useState(null);
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -49,17 +52,27 @@ const App = () => {
       ) {
         const personToEdit = persons.find((person) => person.id === idToEdit);
         const newPerson = { ...personToEdit, number: newNumber };
-        personService.editPerson(idToEdit, newPerson).then((response) => {
-          setPersons(
-            persons.map((person) =>
-              person.id !== idToEdit ? person : response.data
-            )
-          );
-        });
-        setNotificationMessage(`${newPerson.name}'s number has been updated`);
-        setTimeout(() => {
-          setNotificationMessage(null);
-        }, 5000);
+        personService
+          .editPerson(idToEdit, newPerson)
+          .then((response) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== idToEdit ? person : response.data
+              )
+            );
+            setNotificationMessage(
+              `${newPerson.name}'s number has been updated`
+            );
+            setTimeout(() => {
+              setNotificationMessage(null);
+            }, 5000);
+          })
+          .catch((error) => {
+            console.log(error.message);
+            setErrorNotificationMessage(
+              `Information of ${newPerson.name} has already been removed from server`
+            );
+          });
         setNewName("");
         setNewNumber("");
       }
@@ -108,6 +121,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <Notification message={notificationMessage} />
+      <ErrorNotification message={errorNotificationMessage} />
       <FilterForm filterValue={filterValue} handleFiltering={handleFiltering} />
       <h2>Add a new</h2>
       <AddPersonForm
